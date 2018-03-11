@@ -1,2 +1,4 @@
+.DS_Store
+/mysql/mysql.log
 /mysql/data/*
 !/mysql/data/.gitkeep
