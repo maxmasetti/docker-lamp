@@ -16,34 +16,43 @@
 
 ## Cartelle e file necessari
 Dove si desidera, sul proprio pc, preparare la cartella di lavoro `webapp` contenente i file e le cartelle
+
 * `webapp` (cartella di lavoro)
-  * `docker-compose.yml`*
-  * `Dockerfile`*
-  * [ ] `mysql`
-    * [ ] `data`
-    * `mysql.log`
-    * `my.cnf`*
-  * [ ] `www`
-    * `index.php`*
-    * ... (il resto della webapp)
+	* `.env`*
+	* `docker-compose.yml`*
+	* `Dockerfile`*
+	* [ ] `mysql`
+		* [ ] `data`
+		* `mysql.log`
+		* `my.cnf`*
+	* [ ] `www`
+		* `index.php`*
+		* ... (il resto della webapp)
+	* `start.sh`*
+	* `sotp.sh`*
+	* `dumpdb.sh`*
 
 (*) file scaricati dal repository
 
-La cartella `www` conterrà tutta l'applicazione web: il file index.php proposto
-ha l'unico scopo di consentire di verificare velocemente se lo stack funziona
-collegandosi da php al database.
+Il file `.env` contiene la configurazione delle porte su cui vengono esposti i servizi. Sono impostate in modo da non entrare in conflitto con le porte standard 80, 443 e 3306. Modificale con i valori standard se queste porte non sono già occupate.
 
-Il file `Dockerfile` definisce il web-server partendo da un'immagine standard
-per php 7 aggiungendo la libreria mysqli che consente a php di collegarsi al db.
+Il file `docker-compose.yml` definisce la struttura e la natura di tutto lo stack server e i relativi comandi `docker-compose up` e `docker-compose down` permettono di costruire e demolire l'intero stack. In particolare definisce quali porte delle macchine server vengono mappate e su quali porte del host: modificare tali valori per adattarli alle proprie esigenze (tenendo conto che, se sul host le porte 80, 443 e 3306 sono già occupate, tentandone la mappatura con le relative dei server, si causa un errore che impedisce allo stack di avviarsi correttamente).
 
-Il file `docker-compose.yml` definisce la struttura e la natura di tutto lo stack
-server e i relativi comandi `docker-compose up` e `docker-compose down` permettono di costruire e demolire l'intero stack. In particolare definisce quali porte delle macchine server vengono mappate e su quali porte del host: modificare tali valori per adattarli alle proprie esigenze (tenendo conto che, se sul host le porte 80, 443 e 3306 sono già occupate, tentandone la mappatura con le relative dei server, si causa un errore che impedisce allo stack di avviarsi correttamente).
+Il file `Dockerfile` definisce il web-server partendo da un'immagine standard per php 7 aggiungendo la libreria mysqli che consente a php di collegarsi al db.
+
+La cartella `mysql` contiene i file del database, la configurazione e il log. Il file mysql.log deve essere creato a mano prima di avviare i servizi. 
 
 Il file `my.cnf` definisce la configurazione del server mysql tentando di minimizzarne l'impatto sul file system. In caso l'occupazione di spazio non fosse un problema è possibile commmentare la seconda parte delle direttive.
+
+La cartella `www` conterrà tutta l'applicazione web: il file index.php proposto ha l'unico scopo di consentire di verificare velocemente se lo stack funziona collegandosi da php al database.
+Fa' attenzione poiché l'applicazione php si connette al db sulla porta 3306, indipendentemente dalla porta configurata nel file `.env`, che invece è la porta a cui collegarsi per accedere al db dall'host.
+
+I comandi `start.sh` e `stop.sh` servono per avviare e fermare lo stack server. Il comando `dumpdb.sh` consente di creare un file di dump dell'intero db (ovviamente a stack funzionante).
 
 ## Ubuntu
 ### Installazione
 [Ecco come fare](https://docs.docker.com/install/linux/docker-ce/ubuntu/) per installare Docker-CE:
+
 ```bash
 $ sudo apt-get remove docker docker-engine docker.io
 $ sudo apt-get update
@@ -61,18 +70,21 @@ $ sudo apt-get update
 $ sudo apt-get install docker-ce
 $ sudo docker run hello-world
 ```
-## Setup del sistema
+### Setup del sistema
 [Ecco cosa occorre fare](https://docs.docker.com/install/linux/linux-postinstall/):
+
 ```bash
 $ sudo groupadd docker
 $ sudo usermod -aG docker $USER
 ```
 Fare il logout e quindi di nuovo il login per recepire le ultime modifiche.
+
 ```bash
 $ docker run hello-world
 ```
 
 E per installare [docker-compose](https://docs.docker.com/compose/install/):
+
 ```bash
 $ sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 $ sudo chmod +x /usr/local/bin/docker-compose
@@ -83,11 +95,17 @@ docker-compose version 1.19.0, build 1719ceb
 ### Avvio
 Per creare i container e avviarli,
 dalla cartella di lavoro (`webapp`):
+
+```bash
+$ ./start.sh
+```
+oppure a mano:
+
 ```bash
 $ docker-compose up
 ```
-che mantiene il terminale collegato all'output dei processi attivati sui server,
-oppure si può avviare in modo "detached" con l'opzione:
+che mantiene il terminale collegato all'output dei processi attivati sui server, oppure si può avviare in modo "detached" con l'opzione:
+
 ```bash
 $ docker-compose up -d
 ```
@@ -105,15 +123,23 @@ Come si evince dal file `index.php`, il server web accede al server mysql utiliz
 
 ### Stop
 Dalla cartella di lavoro (`webapp`):
+
+```bash
+$ ./stop.sh
+```
+oppure
+
 ```bash
 $ docker-compose stop
 ```
-Per cancellare i container:
+Per fermare il tutto e cancellare i container:
+
 ```bash
 $ docker-compose down
 ```
 ### Rimozione
 Per eliminare docker e tutti i file di lavoro:
+
 ```bash
 $ sudo apt-get purge docker-ce
 $ sudo rm -rf /var/lib/docker
@@ -124,8 +150,7 @@ $ rm -rf webapp
 ### Installazione
 [Ecco come fare](https://docs.docker.com/docker-for-windows/install/):
 
-Scaricare [Docker](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
-e installarlo seguendo la [guida](https://docs.docker.com/docker-for-windows/).
+Scaricare [Docker](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe) e installarlo seguendo la [guida](https://docs.docker.com/docker-for-windows/).
 
 ### Avvio
 ### Stop
@@ -134,8 +159,7 @@ e installarlo seguendo la [guida](https://docs.docker.com/docker-for-windows/).
 ### Installazione
 [Ecco come fare](https://docs.docker.com/docker-for-mac/install/):
 
-Scaricare [Docker](https://download.docker.com/mac/stable/Docker.dmg)
-e installarlo seguendo la [guida](https://docs.docker.com/docker-for-mac/).
+Scaricare [Docker](https://download.docker.com/mac/stable/Docker.dmg) e installarlo seguendo la [guida](https://docs.docker.com/docker-for-mac/).
 
 ### Avvio
 Come Ubuntu
