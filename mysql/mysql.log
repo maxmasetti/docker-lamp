@@ -1,0 +1,18 @@
+mysqld, Version: 5.7.21-log (MySQL Community Server (GPL)). started with:
+Tcp port: 0  Unix socket: /var/run/mysqld/mysqld.sock
+Time                 Id Command    Argument
+2018-03-09T21:45:26.755096Z	    2 Connect	root@172.18.0.3 on  using TCP/IP
+2018-03-09T21:45:26.760713Z	    2 Query	SHOW VARIABLES
+2018-03-09T21:45:26.847600Z	    2 Quit	
+2018-03-09T21:45:29.087228Z	    3 Connect	root@172.18.0.3 on  using TCP/IP
+2018-03-09T21:45:29.088280Z	    3 Query	SHOW VARIABLES
+2018-03-09T21:45:29.109801Z	    3 Quit	
+2018-03-09T22:02:15.978437Z	    4 Connect	root@172.18.0.3 on  using TCP/IP
+2018-03-09T22:02:15.979949Z	    4 Query	SHOW VARIABLES
+2018-03-09T22:02:16.010184Z	    4 Quit	
+mysqld, Version: 5.7.21-log (MySQL Community Server (GPL)). started with:
+Tcp port: 0  Unix socket: /var/run/mysqld/mysqld.sock
+Time                 Id Command    Argument
+2018-03-10T16:01:29.652591Z	    2 Connect	root@172.18.0.2 on  using TCP/IP
+2018-03-10T16:01:29.675083Z	    2 Query	SHOW VARIABLES
+2018-03-10T16:01:29.755130Z	    2 Quit	

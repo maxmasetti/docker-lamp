@@ -10,13 +10,14 @@ services:
       - ./mysql/my.cnf:/etc/my.cnf
       - ./mysql/data:/var/lib/mysql
       - ./mysql/mysql.log:/var/log/mysql/mysql.log
+    #command: tail -f /var/log/mysql/mysql.log
     environment:
       MYSQL_ROOT_PASSWORD: root
       #MYSQL_DATABASE: databasename
       #MYSQL_USER: dbusername
       #MYSQL_PASSWORD: dbuserpassword
     ports:
-      - 33060:3306  # expose container's 3306 on host's 33060
+      - 3306:3306  # expose container's 3306 on host's 33060
 
   web:
     #image: php:apache
@@ -30,8 +31,8 @@ services:
     volumes:
       - ./www:/var/www/html
     ports:
-      - 8080:80  # expose container's 80 on host's 8080, the web service
-      - 4430:443  # expose container's 443 on host's 4433, the web service
+      - 80:80  # expose container's 80 on host's 8080, the web service
+      #- 4430:443  # expose container's 443 on host's 4433, the web service
 
 
 #volumes:
