@@ -3,7 +3,6 @@
 ![Docker](https://blog.seeweb.it/wp-content/uploads/2015/06/homepage-docker-logo-300x248.png)
 
 
-
 ## Sofware Requirements
 
 * Docker-CE
@@ -152,6 +151,15 @@ CPython version: 2.7.12
 OpenSSL version: OpenSSL 1.0.2g  1 Mar 2016
 ```
 
+### Download dei file per lo stack lamp da github
+Dalla cartella in cui creare la cartella lamp, digitare il comando:
+
+```bash
+$ git clone https://github.com/maxmasetti/docker-lamp.git webapp
+$ cd webapp
+```
+oppure utilizzare un client grafico per git.
+
 ### Avvio
 Per creare i container (le macchine virtuali che compongono lo stack lamp) e avviarli, dalla cartella di lavoro (`webapp`):
 
@@ -159,6 +167,11 @@ Per creare i container (le macchine virtuali che compongono lo stack lamp) e avv
 $ ./start.sh
 ```
 Se preferisci avviare il tutto a mano, digita il comando:
+
+```bash
+$ touch mysql/mysql.log
+```
+e quindi invocare il comando:
 
 ```bash
 $ docker-compose up
@@ -201,7 +214,6 @@ e quindi riavviare lo stack. Per vedere il log in continuo, usa il comando tail:
 ```bash
 $ tail -f mysql/mysql.log
 ```
-
 
 **Ora puoi iniziare a scrivere i tuoi programmi nella cartella www.**
 
