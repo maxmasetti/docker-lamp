@@ -1,24 +1,24 @@
 # Ambiente di sviluppo Apache+PHP+MySQL basato su
 
-![Docker](https://blog.seeweb.it/wp-content/uploads/2015/06/homepage-docker-logo-300x248.png)
-
+<!-- ![Docker](https://blog.seeweb.it/wp-content/uploads/2015/06/homepage-docker-logo-300x248.png) -->
+![Docker](https://dl.dropboxusercontent.com/s/iocp4mxw4pdz4x2/docker-lamp.png)
 
 ## Sofware Requirements
 
-* Docker-CE
-* Docker-compose
-* Kitematic (opzionale)
-* Client GUI per MySQL (opzionale)
+* **Docker Community Edition**
+* **docker-compose**
+* *Kitematic* (opzionale): interfaccia grafica a Docker
+* Client grafico per MySQL (opzionale)
 * IDE (opz.): Atom, Brackets, Eclipse, etc.
-* composer (opzionale)
-* bower (opzionale)
-* git (opzionale)
+* *composer* (opzionale): scaricare e aggiornare le dipendenze PHP
+* *bower* (opzionale): scaricare e aggiornare le dipendenze JavaScript
+* *git* (opz.: i file di questo repo possono essere scaricati anche in altro modo)
 
 ## Cartelle e file necessari
-Dove si desidera, sul proprio pc, scarichiamo la cartella di lavoro `webapp` contenente i file e le cartelle.
+Dove si desidera, non è necessario si trovi in un posto particolare, scarichiamo la cartella di lavoro da github.
 
 ### Download da github
-Dalla cartella di lavoro, non è necessario si trovi in un posto particolare, digitare il comando git per scaricare la cartella lamp e tutto il contenuto:
+Digitare il comando git per clonare questo repository assegnando un nome, ad esempio `webapp`, che sarà il nome del progetto:
 
 ```console
 $ git clone https://github.com/maxmasetti/docker-lamp.git webapp
@@ -61,8 +61,7 @@ Fa' attenzione poiché l'applicazione php si connette al db sulla porta 3306, in
 
 I comandi `start.sh` e `stop.sh` servono per avviare e fermare lo stack server. Il comando `dumpdb.sh` consente di creare un file di dump dell'intero db (ovviamente a stack funzionante).
 
-## Ubuntu
-### Installazione
+## Installazione su Ubuntu
 [Ecco come fare](https://docs.docker.com/install/linux/docker-ce/ubuntu/) per installare Docker:
 
 ```console
@@ -114,7 +113,6 @@ Share images, automate workflows, and more with a free Docker ID:
 
 For more examples and ideas, visit:
  https://docs.docker.com/engine/userguide/
-
 ```
 
 ### Setup del sistema
@@ -151,27 +149,26 @@ CPython version: 2.7.12
 OpenSSL version: OpenSSL 1.0.2g  1 Mar 2016
 ```
 
-### Download dei file per lo stack lamp da github
-Dalla cartella in cui creare la cartella lamp, digitare il comando:
+## Installazione su macOS
+Scaricare [Docker](https://store.docker.com/editions/community/docker-ce-desktop-mac) e installarlo seguendo la [guida](https://store.docker.com/editions/community/docker-ce-desktop-mac/plans/docker-ce-desktop-mac-tier?tab=instructions).
 
-```console
-$ git clone https://github.com/maxmasetti/docker-lamp.git webapp
-$ cd webapp
-```
-oppure utilizzare un client grafico per git.
+## Installazione su Windows
+Scaricare [Docker](https://store.docker.com/editions/community/docker-ce-desktop-windows) e installarlo seguendo la [guida](https://store.docker.com/editions/community/docker-ce-desktop-windows/plans/docker-ce-desktop-windows-tier?tab=instructions).
 
-### Avvio
+## Tutte le installazioni disponibili di Docker Community Edition
+[Visita la pagina ufficiale](https://store.docker.com/search?offering=community&q=&type=edition)
+
+
+## Operatività Docker
+
+### Creazione e avvio delle macchine (immagini e container)
+
 Per creare i container (le macchine virtuali che compongono lo stack lamp) e avviarli, dalla cartella di lavoro (`webapp`):
 
 ```console
 $ ./start.sh
 ```
 Se preferisci avviare il tutto a mano, digita il comando:
-
-```console
-$ touch mysql/mysql.log
-```
-e quindi invocare il comando:
 
 ```console
 $ docker-compose up
@@ -182,7 +179,7 @@ che mantiene il terminale collegato all'output dei processi attivati sui server,
 $ docker-compose up -d
 ```
 
-Dopo qualche minuto (la prima volta deve scaricare tutte le immagini da internet) e un bel po' di righe di log, dovrebbe comparire la scritta:
+Dopo qualche minuto (la prima volta deve scaricare tutte le immagini da internet) e un bel po' di righe di log, dovrebbero comparire le scritte:
 
 ```console
 ...
@@ -192,7 +189,7 @@ mysql-server | Version: '5.7.21-log'  socket: '/var/run/mysqld/mysqld.sock'  por
 web-server | [Mon Mar 12 19:09:23.516886 2018] [core:notice] [pid 1] AH00094: Command line: 'apache2 -D FOREGROUND'
 ```
 
-Visita quindi [localhost:8080](localhost:8080) (correggi `8080` con la porta configurata nel file `.env`, se l'hai cambiata) e verifica il corretto funzionamento del tutto, la pagina dovrebbe rispondere con le scritte:
+Visita quindi [localhost:8080](localhost:8080) (correggi `8080` con la porta configurata nel file `.env`, se l'hai cambiata) per verificare il corretto funzionamento del tutto, la pagina dovrebbe rispondere con le scritte:
 
 ```console
 Success: A proper connection to MySQL was made!
@@ -200,11 +197,11 @@ Host information: db via TCP/IP
 ...
 ```
 
-Per accedere al database dal host, ad esempio con un client GUI come *emma* per Ubuntu (installabile dall'applicazione Ubuntu Software), [Sequel Pro](http://sequelpro.com/) per macOS o [Heidi](https://www.heidisql.com) per Windows, utilizzare l'indirizzo `localhost` sulla porta `33060` (o così come configurata nel file `.env`) con utente `root` e password `root`.
+Per accedere al database dal host, ad esempio con un client grafico come *emma* per Ubuntu (installabile dall'applicazione Ubuntu Software), [Sequel Pro](http://sequelpro.com/) per macOS o [Heidi](https://www.heidisql.com) per Windows, utilizza l'indirizzo `localhost` sulla porta `33060` (o così come configurata nel file `.env`) con utente `root` e password `root`.
 
-Come si evince dal file `index.php`, il server web accede al server mysql utilizzando il dn `db` sulla porta mysql standard (3306).
+Come si può vedere dal file `index.php`, da php si accede al server mysql utilizzando il dn `db` sulla porta mysql standard (3306).
 
-Se il log di mysql nel file `mysql/mysql.log` non compare, si può provare a cambiare i permessi del file stesso:
+Se il log di mysql nel file `mysql/mysql.log` non compare, si può provare a cambiare i permessi del file aggiungendo la possibilità di scrivere a chiunque:
 
 ```console
 $ chmod ugo+w mysql/mysql.log
@@ -229,45 +226,76 @@ oppure puoi utilizzare lo script:
 $ dumpdb.sh
 ```
 
-### Stop
+### Stop dei container
+
 Dalla cartella di lavoro (`webapp`):
 
 ```console
 $ ./stop.sh
 ```
-oppure
+oppure a mano:
 
 ```console
 $ docker-compose stop
 ```
-Per fermare il tutto e cancellare i container:
+Per fermare il tutto e cancellare anche tutti i container (ma non le immagini):
 
 ```console
 $ docker-compose down
 ```
+
+### Lo stato dell'arte
+I comandi per vedere cos'è disponibile in docker, ovvero container e immagini: i container sono macchine in esecuzione (o eventualmente "dormienti") mentre le immagini sono in qualche modo gli harddisk dei container, anche se vanno pensati a mo' matrioska, poiché alcune estendono altre.
+Per visualizzare i container in esecuzione:
+
+```console
+$ docker container ls
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                     NAMES
+a355f4ec5607        apachephp           "docker-php-entrypoi…"   48 seconds ago      Up 47 seconds       0.0.0.0:8080->80/tcp      web-server
+ff38e291b380        mysql               "docker-entrypoint.s…"   49 seconds ago      Up 48 seconds       0.0.0.0:33060->3306/tcp   mysql-server
+```
+Per visualizzare tutti i container:
+
+```console
+$ docker container list -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                     PORTS                     NAMES
+a355f4ec5607        apachephp           "docker-php-entrypoi…"   49 seconds ago      Up 48 seconds              0.0.0.0:8080->80/tcp      web-server
+ff38e291b380        mysql               "docker-entrypoint.s…"   50 seconds ago      Up 49 seconds              0.0.0.0:33060->3306/tcp   mysql-server
+fc2a91751b95        provpl:latest       "/entrypoint.sh"         4 weeks ago         Exited (137) 4 weeks ago                             provpl
+```
+Per visualizzare le immagini disponibili:
+
+```console
+$ docker image list 
+REPOSITORY                    TAG                 IMAGE ID            CREATED             SIZE
+apachephp                     latest              6ac0fa923387        5 days ago          378MB
+php                           apache              d3e979c9935d        8 days ago          377MB
+mysql                         latest              5d4d51c57ea8        2 weeks ago         374MB
+ubuntu                        16.04               0458a4468cbc        6 weeks ago         112MB
+hello-world                   latest              48b5124b2768        14 months ago       1.84kB
+kitematic/hello-world-nginx   latest              03b4557ad7b9        2 years ago         7.91MB
+```
+
 ### Rimozione
 Per eliminare docker e tutti i file di lavoro:
 
 ```console
-$ sudo apt-get purge docker-ce
+$ sudo apt-get purge docker.io
 $ sudo rm -rf /var/lib/docker
 $ rm -rf webapp
 ```
+mentre per eliminare una singola immagine:
 
-## Windows
-### Installazione
-Scaricare [Docker](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe) e installarlo seguendo la [guida](https://docs.docker.com/docker-for-windows/).
-### Avvio
-Come Ubuntu o utilizzando Kitematic.
-### Stop
-Come Ubuntu o utilizzando Kitematic.
+```console
+$ docker image rm 6ac0fa923387
+```
 
-## macOS
-### Installazione
-Scaricare [Docker](https://download.docker.com/mac/stable/Docker.dmg) e installarlo seguendo la [guida](https://docs.docker.com/docker-for-mac/). Per installare Kitematic, dal menù a tendina selezionare `Kitematic`.
-### Avvio
-Come Ubuntu o utilizzando Kitematic.
-### Stop
-Come Ubuntu o utilizzando Kitematic.
+## Kitematic
+Kitematic è un'interfaccia grafica al sistema Docker. Consente di clonare immagini disponibili su [Docker Hub](https://hub.docker.com), un vero e proprio repository di macchine già confezionate, anche se per trovare la migliore a volte occorre provarne qualcuna: i like e il numero di volte che sono state scaricate possono essere di aiuto nella valutazione. Da Kitematic è possibile avviare, fermare e cancellare i container, vederne il log, modificare le cartelle montati e le variabili di ambiente. È da provare.
+
+Per installare Kitematic:
+* Ubuntu: da Ubuntu Software, una volta installato Docker risulta disponibile anche Kitematic.
+* macOS: nel menù Docker nella barra applicazioni c'è la voce Kitematic.
+* Windows: [TBD]
 
 `;)`
