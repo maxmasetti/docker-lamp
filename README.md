@@ -20,7 +20,7 @@ Dove si desidera, sul proprio pc, scarichiamo la cartella di lavoro `webapp` con
 ### Download da github
 Dalla cartella di lavoro, non è necessario si trovi in un posto particolare, digitare il comando git per scaricare la cartella lamp e tutto il contenuto:
 
-```bash
+```console
 $ git clone https://github.com/maxmasetti/docker-lamp.git webapp
 $ cd webapp
 ```
@@ -65,7 +65,7 @@ I comandi `start.sh` e `stop.sh` servono per avviare e fermare lo stack server. 
 ### Installazione
 [Ecco come fare](https://docs.docker.com/install/linux/docker-ce/ubuntu/) per installare Docker:
 
-```bash
+```console
 $ sudo apt-get remove docker docker-engine docker.io
 $ sudo apt-get update
 $ sudo apt-get install \
@@ -82,17 +82,17 @@ $ sudo apt-get update
 ```
 Qui però facciamo una variante, invece di utilizzare il comando da console:
 
-```bash
+```console
 $ sudo apt-get install docker.io
 ```
 utilizziamo il programma di installazione software di Ubuntu, "Ubuntu Software", cerchiamo Docker e lo installiamo. Oppure da linea di comando:
 
-```bash
+```console
 $ sudo snap install docker
 ```
 Una volta installato, proviamo se funziona:
 
-```bash
+```console
 $ sudo docker run hello-world
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
@@ -120,19 +120,19 @@ For more examples and ideas, visit:
 ### Setup del sistema
 [Ecco cosa occorre fare](https://docs.docker.com/install/linux/linux-postinstall/):
 
-```bash
+```console
 $ sudo groupadd docker
 $ sudo usermod -aG docker $USER
 ```
 Fare il logout e quindi di nuovo il login per recepire le ultime modifiche (anche se pare che in realtà occorra riavviare :?). A questo punto dovrebbe funzionare anche senza il sudo (questo tipo di modifica non è consigliabile sui sistemi di produzione, poiché garantisce all'utente un accesso di root senza limitazioni).
 
-```bash
+```console
 $ docker run hello-world
 ```
 
 E per installare l'ultima versione di [docker-compose](https://docs.docker.com/compose/install/):
 
-```bash
+```console
 $ sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 $ sudo chmod +x /usr/local/bin/docker-compose
 $ docker-compose version
@@ -143,7 +143,7 @@ OpenSSL version: OpenSSL 1.0.1t  3 May 2016
 ```
 Oppure si può utilizzare quella installata con snap, ma non è l'ultimissima versione:
 
-```bash
+```console
 $ docker.compose version
 docker-compose version 1.16.1, build unknown
 docker-py version: 2.5.1
@@ -154,7 +154,7 @@ OpenSSL version: OpenSSL 1.0.2g  1 Mar 2016
 ### Download dei file per lo stack lamp da github
 Dalla cartella in cui creare la cartella lamp, digitare il comando:
 
-```bash
+```console
 $ git clone https://github.com/maxmasetti/docker-lamp.git webapp
 $ cd webapp
 ```
@@ -163,28 +163,28 @@ oppure utilizzare un client grafico per git.
 ### Avvio
 Per creare i container (le macchine virtuali che compongono lo stack lamp) e avviarli, dalla cartella di lavoro (`webapp`):
 
-```bash
+```console
 $ ./start.sh
 ```
 Se preferisci avviare il tutto a mano, digita il comando:
 
-```bash
+```console
 $ touch mysql/mysql.log
 ```
 e quindi invocare il comando:
 
-```bash
+```console
 $ docker-compose up
 ```
 che mantiene il terminale collegato all'output dei processi attivati sui server, oppure si può avviare in modo "detached" con l'opzione:
 
-```bash
+```console
 $ docker-compose up -d
 ```
 
 Dopo qualche minuto (la prima volta deve scaricare tutte le immagini da internet) e un bel po' di righe di log, dovrebbe comparire la scritta:
 
-```
+```console
 ...
 mysql-server | 2018-03-12T19:09:22.535808Z 0 [Note] mysqld: ready for connections.
 mysql-server | Version: '5.7.21-log'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
@@ -194,7 +194,7 @@ web-server | [Mon Mar 12 19:09:23.516886 2018] [core:notice] [pid 1] AH00094: Co
 
 Visita quindi [localhost:8080](localhost:8080) (correggi `8080` con la porta configurata nel file `.env`, se l'hai cambiata) e verifica il corretto funzionamento del tutto, la pagina dovrebbe rispondere con le scritte:
 
-```
+```console
 Success: A proper connection to MySQL was made!
 Host information: db via TCP/IP
 ...
@@ -206,12 +206,12 @@ Come si evince dal file `index.php`, il server web accede al server mysql utiliz
 
 Se il log di mysql nel file `mysql/mysql.log` non compare, si può provare a cambiare i permessi del file stesso:
 
-```bash
+```console
 $ chmod ugo+w mysql/mysql.log
 ```
 e quindi riavviare lo stack. Per vedere il log in continuo, usa il comando tail:
 
-```bash
+```console
 $ tail -f mysql/mysql.log
 ```
 
@@ -219,36 +219,36 @@ $ tail -f mysql/mysql.log
 
 Per fare un dump del database:
 
-```bash
+```console
 $ docker exec mysql-server sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD"' > ./databases.sql
 ```
 
 oppure puoi utilizzare lo script:
 
-```bash
+```console
 $ dumpdb.sh
 ```
 
 ### Stop
 Dalla cartella di lavoro (`webapp`):
 
-```bash
+```console
 $ ./stop.sh
 ```
 oppure
 
-```bash
+```console
 $ docker-compose stop
 ```
 Per fermare il tutto e cancellare i container:
 
-```bash
+```console
 $ docker-compose down
 ```
 ### Rimozione
 Per eliminare docker e tutti i file di lavoro:
 
-```bash
+```console
 $ sudo apt-get purge docker-ce
 $ sudo rm -rf /var/lib/docker
 $ rm -rf webapp
