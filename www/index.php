@@ -3,7 +3,7 @@
 
 #phpinfo(); die;
 
-$db = mysqli_connect("db", "root", "root");
+$db = mysqli_connect("db", "root", "root", "books");
 
 if (!$db) {
     echo "Error: Unable to connect to MySQL." . PHP_EOL;

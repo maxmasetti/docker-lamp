@@ -5,7 +5,7 @@ services:
   db:
     image: mysql
     container_name: mysql-server
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./mysql/my.cnf:/etc/my.cnf
       - ./mysql/data:/var/lib/mysql
@@ -24,7 +24,9 @@ services:
     image: apachephp  # Crea una nuova image a partire da php:apache
     build: .
     container_name: web-server
-    restart: always
+    restart: unless-stopped
+    depends_on:
+      - db
     links:
       - db
     volumes:
