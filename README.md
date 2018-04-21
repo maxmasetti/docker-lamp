@@ -79,16 +79,12 @@ $ sudo add-apt-repository \
    stable"
 $ sudo apt-get update
 ```
-Qui però facciamo una variante, invece di utilizzare il comando da console:
+utilizzando il comando apt da console installiamo il pacchetto:
 
 ```console
 $ sudo apt-get install docker.io
 ```
-utilizziamo il programma di installazione software di Ubuntu, "Ubuntu Software", cerchiamo Docker e lo installiamo. Oppure da linea di comando:
 
-```console
-$ sudo snap install docker
-```
 Una volta installato, proviamo se funziona:
 
 ```console
