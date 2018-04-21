@@ -3,15 +3,15 @@ version: '3.1'
 services:
 
   db:
-    image: mysql
+    image: mysql:5
     container_name: mysql-server
     restart: unless-stopped
     volumes:
       - ./mysql/my.cnf:/etc/my.cnf
       - ./mysql/data:/var/lib/mysql
       - ./mysql/mysql.log:/var/log/mysql/mysql.log
-    environment:
-      MYSQL_ROOT_PASSWORD: root
+    #environment:
+      #MYSQL_ROOT_PASSWORD: root
       #MYSQL_DATABASE: databasename
       #MYSQL_USER: dbusername
       #MYSQL_PASSWORD: dbuserpassword
